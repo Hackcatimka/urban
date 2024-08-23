@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Users - Epishura Market{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>User List</h1>
+
+        <!-- Форма сортировки -->
+        <form action="/users" method="get" class="mb-3">
+            <label for="sort_by">Sort by:</label>
+            <select name="sort_by" id="sort_by" class="form-control">
+                <option value="user_id">User ID</option>
+                <option value="full_name">Full Name</option>
+                <option value="birthday">Birthday</option>
+                <option value="company">Company</option>
+                <option value="epicoin">Epicoin</option>
+                <option value="status">Status</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Sort</button>
+        </form>
+
+        <!-- Таблица с пользователями -->
+        <div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Full Name</th>
+                        <th>Birthday</th>
+                        <th>Company</th>
+                        <th>Epicoin</th>
+                        <th>Status</th>
+                        <th>Selected Products</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.user_id }}</td>
+                        <td>{{ user.full_name }}</td>
+                        <td>{{ user.birthday }}</td>
+                        <td>{{ user.company }}</td>
+                        <td>{{ user.epicoin }}</td>
+                        <td>{{ user.status }}</td>
+                        <td>{{ user.selected_products }}</td>
+                        <td>{{ user.total_amount }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

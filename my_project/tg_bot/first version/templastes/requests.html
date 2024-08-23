@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Requests - Epishura Market{% endblock %}
+
+{% block content %}
+    <h1>Request List</h1>
+
+    <!-- Таблица с существующими запросами -->
+    <div class="table-container">
+        <table class="table" id="request-table">
+            <thead>
+                <tr>
+                    <th><a href="#" class="sort-link" data-sort="request_type">Request Type</a></th>
+                    <th><a href="#" class="sort-link" data-sort="user_id">User ID</a></th>
+                    <th><a href="#" class="sort-link" data-sort="full_name">Full Name</a></th>
+                    <th><a href="#" class="sort-link" data-sort="amount">Amount</a></th>
+                    <th><a href="#" class="sort-link" data-sort="product">Product</a></th>
+                    <th><a href="#" class="sort-link" data-sort="delivery_address">Delivery Address</a></th>
+                    <th><a href="#" class="sort-link" data-sort="is_completed">Completed</a></th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in requests %}
+                <tr>
+                    <td>{{ request.request_type }}</td>
+                    <td>{{ request.user_id }}</td>
+                    <td>{{ request.full_name }}</td>
+                    <td>{{ request.amount }}</td>
+                    <td>{{ request.product }}</td>
+                    <td>{{ request.delivery_address }}</td>
+                    <td>{{ 'Yes' if request.is_completed else 'No' }}</td>
+                    <td>
+                        <form action="{{ url_for('toggle_request_completion', request_id=request.id) }}" method="post">
+                            <input type="hidden" name="_method" value="PUT">
+                            {% if request.is_completed %}
+                            <button type="submit" class="btn btn-warning btn-sm">Mark as Not Completed</button>
+                            {% else %}
+                            <button type="submit" class="btn btn-success btn-sm">Mark as Completed</button>
+                            {% endif %}
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.getElementById('request-table');
+            const headers = table.querySelectorAll('th');
+            headers.forEach(header => {
+                header.addEventListener('click', () => {
+                    const sortBy = header.querySelector('.sort-link').getAttribute('data-sort');
+                    const currentDirection = header.getAttribute('data-direction') || 'asc';
+                    const newDirection = currentDirection === 'asc' ? 'desc' : 'asc';
+
+                    headers.forEach(th => th.removeAttribute('data-direction'));
+                    header.setAttribute('data-direction', newDirection);
+
+                    sortTable(table, sortBy, newDirection);
+                });
+            });
+
+            function sortTable(table, sortBy, direction) {
+                const tbody = table.querySelector('tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+
+                rows.sort((rowA, rowB) => {
+                    const cellA = rowA.querySelector(`td:nth-child(${getColIndex(sortBy)})`).innerText.trim();
+                    const cellB = rowB.querySelector(`td:nth-child(${getColIndex(sortBy)})`).innerText.trim();
+
+                    if (!isNaN(cellA) && !isNaN(cellB)) {
+                        return (direction === 'asc' ? parseFloat(cellA) - parseFloat(cellB) : parseFloat(cellB) - parseFloat(cellA));
+                    } else {
+                        return (direction === 'asc' ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA));
+                    }
+                });
+
+                while (tbody.firstChild) {
+                    tbody.removeChild(tbody.firstChild);
+                }
+
+                rows.forEach(row => {
+                    tbody.appendChild(row);
+                });
+            }
+
+            function getColIndex(sortBy) {
+                const headers = Array.from(table.querySelectorAll('th'));
+                for (let i = 0; i < headers.length; i++) {
+                    if (headers[i].querySelector('.sort-link').getAttribute('data-sort') === sortBy) {
+                        return i + 1;
+                    }
+                }
+                return 0;
+            }
+        });
+    </script>
+{% endblock %}
