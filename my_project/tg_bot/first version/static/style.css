@@ -1,0 +1,61 @@
+/* Стили для основного контейнера */
+body {
+    background-color: #f8f9fa;
+}
+.container {
+    margin-top: 50px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+/* Стили для кнопок */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+
+.btn-primary:focus,
+.btn-primary.focus {
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+
+.btn-secondary:focus,
+.btn-secondary.focus {
+    box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);
+
+/* Стили для таблицы */
+.table-container {
+    margin-top: 20px;
+}
+.table {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.table th,
+.table td {
+    vertical-align: middle;
+}
+.table th {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+}
+.table td {
+    border-color: #dee2e6;
+}
+.pagination {
+    justify-content: center;
+    margin-top: 20px;
+}
